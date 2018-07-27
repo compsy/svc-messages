@@ -1,0 +1,13 @@
+{
+  "name": "svc-messages",
+  "version": "0.0.1",
+  "description": "Sample OpenWhisk NodeJS serverless framework service.",
+  "main": "service.js",
+  "keywords": [
+    "serverless",
+    "openwhisk"
+  ],
+  "devDependencies": {
+    "rollup": "^0.63.4"
+  }
+}
