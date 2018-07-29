@@ -63,7 +63,7 @@ module.exports = exports = {
     "no-case-declarations": WARN,
     "no-div-regex": WARN,
     "no-else-return": WARN,
-    "no-empty-label": WARN,
+    "no-labels": WARN,
     "no-empty-pattern": WARN,
     "no-eq-null": WARN,
     "no-eval": ERROR,
@@ -128,7 +128,10 @@ module.exports = exports = {
     "no-undef-init": OFF,
     "no-undef": ERROR,
     "no-undefined": OFF,
-    "no-unused-vars": WARN,
+    "no-unused-vars": [
+      WARN,
+      {"argsIgnorePattern": "^_"}
+    ],
     // Disallow hoisting - let & const don't allow hoisting anyhow
     "no-use-before-define": ERROR,
 
@@ -153,7 +156,7 @@ module.exports = exports = {
     }],
     "constructor-super": ERROR,
     "generator-star-spacing": [ERROR, "before"],
-    "no-arrow-condition": ERROR,
+    "no-confusing-arrow": ERROR,
     "no-class-assign": ERROR,
     "no-const-assign": ERROR,
     "no-dupe-class-members": ERROR,
@@ -223,8 +226,8 @@ module.exports = exports = {
     "quotes": [WARN, "single"],
     "require-jsdoc": [WARN, {
       "require": {
-        "FunctionDeclaration": true,
-        "MethodDefinition": true,
+        "FunctionDeclaration": false,
+        "MethodDefinition": false,
         "ClassDeclaration": false
       }
     }],
@@ -234,10 +237,9 @@ module.exports = exports = {
     }],
     "semi": [ERROR, "always"],
     "sort-vars": OFF,
-    "space-after-keywords": [WARN, "always"],
     "space-before-blocks": [WARN, "always"],
     "space-before-function-paren": [WARN, "never"],
-    "space-before-keywords": [WARN, "always"],
+    "keyword-spacing": [WARN, "always"],
     "space-in-parens": [WARN, "never"],
     "space-infix-ops": [WARN, {
       "int32Hint": true
