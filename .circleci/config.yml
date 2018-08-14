@@ -22,6 +22,6 @@ jobs:
           name: deploy
           command: |
             curl -sL http://ibm.biz/idt-installer | bash
-            ibmcloud login -u $BLUEMIX_USER -p $BLUEMIX_PASSWORD -h https://api.eu-gb.bluemix.net
+            ibmcloud login -u $BLUEMIX_USER -p $BLUEMIX_PASSWORD -a https://api.eu-gb.bluemix.net
             ibmcloud target -o $BLUEMIX_USER -s staging
             make deploy
