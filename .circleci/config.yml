@@ -29,11 +29,19 @@ jobs:
           key: dependency-cache-{{ checksum "package.json" }}
           paths:
             - ./node_modules
+
+  test:
+    <<: *defaults
+    steps:
+      - restore_cache:
+          key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
       - run:
           name: test
           command: npm test
 
-  deploy:
+  deploy-staging:
     <<: *defaults
     steps:
       - restore_cache:
@@ -48,6 +56,21 @@ jobs:
             ibmcloud target -o $BLUEMIX_USER -s staging
             make deploy
 
+  deploy-production:
+    <<: *defaults
+    steps:
+      - restore_cache:
+          key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+      - run:
+          name: Deploy master to openwhisk
+          command: |
+            curl -sL http://ibm.biz/idt-installer | bash
+            ibmcloud login -u $BLUEMIX_USER -p $BLUEMIX_PASSWORD -a https://api.eu-gb.bluemix.net
+            ibmcloud target -o $BLUEMIX_USER -s production
+            make deploy
+
 workflows:
   version: 2
   commit:
@@ -56,9 +79,18 @@ workflows:
       - build:
           requires:
             - checkout_code
-      - deploy:
+      - test:
           requires:
             - build
+      - deploy-staging:
+          requires:
+            - test
           filters:
             branches:
               only: master
+      - deploy-production:
+          requires:
+            - test
+          filters:
+            branches:
+              only: production
