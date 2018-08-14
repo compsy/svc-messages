@@ -1,6 +1,7 @@
 export default class InvitationTexts {
   constructor() {
     this.MAX_REWARD_THRESHOLD = 8000;
+    this.protocol = undefined;
   }
 
   message(_response, _protocolSubscription) {
@@ -23,7 +24,7 @@ export default class InvitationTexts {
     throw new Error('method rewardsThresholdPool not implemented by subclass!');
   }
 
-  defaultPool(_protocol) {
+  defaultPool() {
     throw new Error('method defaultPool not implemented by subclass!');
   }
 
@@ -82,15 +83,17 @@ export default class InvitationTexts {
   }
 
   currentIndex(protocolCompletion) {
-    return protocolCompletion.findIndex((elem) => {
+    const val= protocolCompletion.findIndex((elem) => {
       return elem.future;
     });
+    return val;
   }
 
   specialConditions(protocolCompletion, curidx) {
     let smsPool = [];
     const empty = 0;
     smsPool = this.push(smsPool, this.firstResponsesConditions(protocolCompletion, curidx));
+
     if (smsPool.length === empty) {
       smsPool = this.push(smsPool, this.missedResponsesConditions(protocolCompletion, curidx));
     }
@@ -102,12 +105,9 @@ export default class InvitationTexts {
     return smsPool;
   }
 
-  thresholdConditions(protocol, protocolCompletion, curidx) {
-    const currentProtocolCompletion = this.truncatedProtocolCompletion(protocolCompletion, curidx);
-    // calculateReward(currentProtocolCompletion, false);
-    const rewardsBefore = protocol.current_reward;
-    // protocol.calculateReward(currentProtocolCompletion, true);
-    const rewardsAfter = protocol.maximum_reward;
+  thresholdConditions() {
+    const rewardsBefore = this.protocol.current_reward;
+    const rewardsAfter = this.protocol.maximum_reward;
 
     let smsPool = [];
     const sequence = this.generateSequence(this.MAX_REWARD_THRESHOLD, 1000);
@@ -138,17 +138,20 @@ export default class InvitationTexts {
   }
 
   sampleMessage(messages) {
-    console.log(Math.floor(Math.random() * messages.length));
+    //console.log(Math.floor(Math.random() * messages.length));
     return messages[Math.floor(Math.random() * messages.length)];
   }
 
-  push(array, value) {
-    if (value === undefined || value === [undefined]) {
+  push(arr, value) {
+    if (value === undefined || value === [ undefined ]) {
       return [];
     }
-    array = array.concat(value);
-    console.log(array.length);
-    return array;
+    return arr.concat(value);
+  }
+
+  rubySlice(arr, from, to) {
+    if (from === to) { return [arr[from]]; }
+    return arr.slice(from, to);
   }
 
   rejoinedConditions(protocolCompletion, curidx) {
@@ -238,7 +241,7 @@ export default class InvitationTexts {
     }
 
     // Voormeting
-    if (!completedSome(protocolCompletion) && smsPool.length === 0) {
+    if (!this.completedSome(protocolCompletion) && smsPool.length === 0) {
       smsPool = this.push(smsPool, this.firstResponsePool());
     }
 
@@ -246,11 +249,11 @@ export default class InvitationTexts {
   }
 
   truncatedProtocolCompletion(protocolCompletion, curidx) {
-    protocolCompletion.slice(0, curidx);
+    return this.rubySlice(protocolCompletion, 0, curidx);
   }
 
   completedSome(protocolCompletion) {
-    protocolCompletion.some((x) => {
+    return protocolCompletion.some((x) => {
       return x.completed;
     });
   }
@@ -259,7 +262,7 @@ export default class InvitationTexts {
     // That is: the voormeting and the first periodical measurement
     // Minimal pattern: ..C(V = voormeting, X = completed, C = current)
     // index: 012
-    return curidx == 2 &&
+    return curidx === 2 &&
       !protocolCompletion[0].completed &&
       !protocolCompletion[1].completed;
   }
@@ -284,10 +287,10 @@ export default class InvitationTexts {
   missedMoreThanOne(protocolCompletion, curidx) {
     // Minimal pattern: VX..C(V = voormeting, X = completed, C = current)
     // index: 01234
-    curidx > 3 &&
+    return curidx > 3 &&
       !protocolCompletion[curidx - 1].completed &&
       !protocolCompletion[curidx - 2].completed &&
-      protocolCompletion.slice(1, curidx - 3).some((x) => {
+      this.rubySlice(protocolCompletion, 1, curidx - 3).some((x) => {
         return x.completed;
       });
   }
@@ -295,8 +298,8 @@ export default class InvitationTexts {
   missedEverything(protocolCompletion, curidx) {
     // Minimal pattern: V.C(V = voormeting, X = completed, C = current)
     // index: 012
-    curidx > 1 &&
-      !protocolCompletion.slice(1, curidx - 1).some((x) => {
+    return curidx > 1 &&
+      !this.rubySlice(protocolCompletion, 1, curidx - 1).some((x) => {
         return x.completed;
       });
   }
@@ -304,7 +307,7 @@ export default class InvitationTexts {
   rejoinedAfterMissingOne(protocolCompletion, curidx) {
     // Minimal pattern: VX.XC(V = voormeting, X = completed, C = current)
     // index: 01234
-    curidx > 3 &&
+    return curidx > 3 &&
       protocolCompletion[curidx - 1].completed &&
       !protocolCompletion[curidx - 2].completed &&
       protocolCompletion[curidx - 3].completed;
@@ -313,18 +316,19 @@ export default class InvitationTexts {
   rejoinedAfterMissingMultiple(protocolCompletion, curidx) {
     // Minimal pattern: VX..XC(V = voormeting, X = completed, C = current)
     // index: 012345
-    curidx > 4 &&
+    return curidx > 4 &&
       protocolCompletion[curidx - 1].completed &&
       !protocolCompletion[curidx - 2].completed &&
       !protocolCompletion[curidx - 3].completed &&
-      protocolCompletion.slice(1, curidx - 4).some((x) => {
+      this.rubySlice(protocolCompletion, 1, curidx - 4).some((x) => {
         return x.completed;
       });
   }
 
-  streakThreshold(protocol) {
+  streakThreshold() {
     //Protocol.findByName('studenten') & .rewards & .second & .threshold || 3
-    return protocol.streak_threshold || 3;
+    const defaultStreak = 3;
+    return this.protocol.streak_threshold || 3;
   }
 
   isPostAssessment(response) {

@@ -10,19 +10,24 @@ export default class StudentTexts extends InvitationTexts {
   }
 
   pooledMessage(protocol, protocolCompletion) {
+    this.protocol = protocol;
     const curidx = this.currentIndex(protocolCompletion);
     let smsPool = [];
+    this.push([], []);
     smsPool = this.push(smsPool, this.specialConditions(protocolCompletion, curidx));
 
     if (smsPool.length === 0) {
-      smsPool = this.push(smsPool, this.thresholdConditions(protocol, protocolCompletion, curidx));
+      console.log('!!!!!!!!!!!!!!!!!!!!!!!');
+      smsPool = this.push(smsPool, this.thresholdConditions());
     }
 
     if (smsPool.length === 0) {
+      console.log('@@@@@@@@@@@@@@@@@@@@@@@');
       smsPool = this.push(smsPool, this.streakConditions(protocolCompletion, curidx));
     }
 
     if (smsPool.length === 0) {
+      console.log('######################');
       smsPool = this.push(smsPool, this.defaultPool(protocol));
     }
     return this.sampleMessage(smsPool);
@@ -39,7 +44,8 @@ export default class StudentTexts extends InvitationTexts {
       'Help {{je_begeleidingsinitiatief}} nog beter te worden in wat ze doen en vul nu de vragenlijst in \uD83D\uDE00.'
     ];
 
-    if (protocol.name !== undefined && protocol.name !== 'studenten_control') {
+    if (protocol !== undefined && protocol.name !== undefined && protocol.name !== 'studenten_control') {
+      console.log('!!!!!!!!!!!!!!!!!!!!!!!!');
       inviteTexts = this.push(inviteTexts, 'Help {{naam_begeleider}} om {{zijn_haar_begeleider}} werk beter te kunnen doen en vul deze vragenlijst in \uD83D\uDE00.');
       inviteTexts = this.push(inviteTexts, 'Heel fijn dat je meedoet, hiermee help je {{naam_begeleider}} {{zijn_haar_begeleider}} begeleiding te verbeteren!');
     }
@@ -121,7 +127,7 @@ export default class StudentTexts extends InvitationTexts {
     ' vragenlijst een stuk korter dan je gewend bent \uD83D\uDE00.';
   }
 
-  repeatedFirstResponse_pool() {
+  repeatedFirstResponsePool() {
     // Voormeting (repeated)
     return [
       'Hartelijk dank voor je inzet! Naast de wekelijkse vragenlijst sturen we je deze week ' +

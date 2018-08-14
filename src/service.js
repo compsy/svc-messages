@@ -35,3 +35,9 @@ function main(params) {
 }
 
 export default main;
+
+    //const currentProtocolCompletion = this.truncatedProtocolCompletion(protocolCompletion, curidx);
+// protocol: {
+// current_reward: protocol.calculateReward(currentProtocolCompletion, false),
+// maximum_reward: protocol.calculateReward(currentProtocolCompletion, true);
+// }

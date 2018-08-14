@@ -13,11 +13,11 @@ export default class MentorTexts extends InvitationTexts {
       console.log('target still missing!');
       // @Ando: volgens mij klopt dit wel gewoon, met naam begeleider. Dit moeten we alleen
       // niet vergeten goed te testen.
-      return `Hoi {{naam_begeleider}}, wij willen net als jij graag vsv voorkomen.` +
+      return 'Hoi {{deze_student}}, wij willen net als jij graag vsv voorkomen.' +
         ' Wil jij ons voor de laatste keer helpen en de laatste, maar cruciale,' +
         ' u-can-act vragenlijst invullen?';
     }
-    return `Hoi {{naam_begeleider}}, de allerlaatste vragenlijsten` +
+    return 'Hoi {{deze_student}}, de allerlaatste vragenlijsten' +
       ' staan voor je klaar. Voor ons is het ontzettend belangrijk dat deze' +
       ' wordt ingevuld. Help jij ons voor de laatste keer?\n' +
       'Ps. Door aan te geven dat je inmiddels vakantie hebt, wordt de' +
@@ -31,11 +31,11 @@ export default class MentorTexts extends InvitationTexts {
 
     // voormeting is in different protsub
     const hasOneInvite = 1;
-    //if (response.protocol_subscription.responses.invited.count === hasOneInvite) {
+    // if (response.protocol_subscription.responses.invited.count === hasOneInvite) {
     if (protocolSubscription.invitations === hasOneInvite) {
       return this.wasInvitedMessage();
     }
-    return this.defaultMessage(response);
+    return this.defaultMessage();
   }
 
   wasInvitedMessage() {
@@ -43,8 +43,8 @@ export default class MentorTexts extends InvitationTexts {
       'Vul nu de eerste wekelijkse vragenlijst in.';
   }
 
-  defaultMessage(response) {
-    return `Hoi {{naam_begeleider}}, je wekelijkse vragenlijsten staan weer voor je klaar!`;
+  defaultMessage() {
+    return 'Hoi {{deze_student}}, je wekelijkse vragenlijsten staan weer voor je klaar!';
   }
 
   preAssessmentQuestionnaireTexts(protocolSubscription) {
@@ -59,10 +59,14 @@ export default class MentorTexts extends InvitationTexts {
   }
 
   openQuestionnaire(response, questionnaireName) {
-    return response.open_questionnaires.some((questionnaire) => (questionnaire === questionnaireName))
+    return response.open_questionnaires.some((questionnaire) => {
+      return questionnaire === questionnaireName;
+    });
   }
 
   completedSome(protocolSubscription) {
-    return protocolSubscription.protocol_completion.some((elem) => {elem.completed});
+    return protocolSubscription.protocol_completion.some((elem) => {
+      return elem.completed;
+    });
   }
 }
