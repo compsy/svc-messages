@@ -3,7 +3,7 @@ export default class InvitationTexts {
     this.MAX_REWARD_THRESHOLD = 8000;
   }
 
-  message(Response) {
+  message(response, protocolSubscription) {
     throw 'method message not implemented by subclass!';
   }
 
@@ -66,11 +66,18 @@ export default class InvitationTexts {
   isAnnouncementWeek() {
     // Time.zone.now > Time.new(2018, 7, 24).inTimeZone &&
     // Time.zone.now < Time.new(2018, 8, 1).inTimeZone
+    const fromDate = Date.parse("7/24/2018");
+    const toDate = Date.parse("8/1/2018");
+    const today = new Date()
+
+    if((today < toDate && today >= fromDate)) {
+        return true;
+    }
     return false;
   }
 
   targetFirstName(response) {
-    response.first_name;
+    return person.first_name;
   }
 
   currentIndex(protocolCompletion) {
@@ -116,12 +123,12 @@ export default class InvitationTexts {
     let smsPool = [];
 
     // Streak about to be 3
-    if (protocolCompletion[curidx].streak === this.streakSize()) {
+    if (protocolCompletion[curidx].streak === this.streakThreshold()) {
       smsPool = this.push(smsPool, this.aboutToBeOnStreakPool());
     }
 
     // On bonus streak( == on streak > 3)
-    if (protocolCompletion[curidx].streak > this.streakSize() && smsPool.length === 0) {
+    if (protocolCompletion[curidx].streak > this.streakThreshold() && smsPool.length === 0) {
       smsPool = this.push(smsPool, this.onStreakPool());
     }
 
@@ -269,7 +276,7 @@ export default class InvitationTexts {
     return curidx > 2 && // only make sure that we can check the index at curidx - 2.
       !protocolCompletion[curidx - 1].completed &&
       protocolCompletion[curidx - 2].completed &&
-      protocolCompletion[curidx - 2].streak >= this.streakSize();
+      protocolCompletion[curidx - 2].streak >= this.streakThreshold();
   }
 
   missedMoreThanOne(protocolCompletion, curidx) {
@@ -313,14 +320,12 @@ export default class InvitationTexts {
       });
   }
 
-  streakSize() {
-    // Protocol.findByName('studenten') & .rewards & .second & .threshold || 3
-    console.log('WRONG!');
-    return 3;
+  streakThreshold(protocol) {
+    //Protocol.findByName('studenten') & .rewards & .second & .threshold || 3
+    return protocol.streak_threshold || 3;
   }
 
-  postAssessment(response) {
-    console.log('WRONG!');
-    return true;
+  isPostAssessment(response) {
+    return response.questionnaire_name.toLowerCase().indexOf('nameting');
   }
 }

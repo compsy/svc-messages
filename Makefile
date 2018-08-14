@@ -22,7 +22,8 @@ else
 endif
 
 example:
-	./action_example.sh | jq '.response.result.payload'
+	#./action_example.sh | jq '.response.result.payload'
+	./action_example.sh | jq
 
 
 name:

@@ -31,16 +31,16 @@ export default class StudentTexts extends InvitationTexts {
   defaultPool(protocol) {
     // TODO: make sure to replace newlines by spaces in the email template.
     let inviteTexts = [
-      'Hoi {{deze_student}},\nEr staat een vragenlijst voor je klaar \u1F60A.',
+      'Hoi {{deze_student}},\nEr staat een vragenlijst voor je klaar \uD83D\uDE00.',
       'Een u-can-act tip: vul drie vragenlijsten achter elkaar in en verdien een euro extra per vragenlijst!',
       'Hoi {{deze_student}},\nVul direct de volgende vragenlijst in. Het kost maar 3 minuten en je helpt ons enorm!',
       'Hallo {{deze_student}},\nVerdien twee euro! Vul nu de vragenlijst in.',
       'Fijn dat jij meedoet! Door jou kunnen jongeren nog betere begeleiding krijgen in de toekomst!',
-      'Help {{je_begeleidingsinitiatief}} nog beter te worden in wat ze doen en vul nu de vragenlijst in \u1F60A.'
+      'Help {{je_begeleidingsinitiatief}} nog beter te worden in wat ze doen en vul nu de vragenlijst in \uD83D\uDE00.'
     ];
 
     if (protocol.name !== undefined && protocol.name !== 'studenten_control') {
-      inviteTexts = this.push(inviteTexts, 'Help {{naam_begeleider}} om {{zijn_haar_begeleider}} werk beter te kunnen doen en vul deze vragenlijst in \u1F60A.');
+      inviteTexts = this.push(inviteTexts, 'Help {{naam_begeleider}} om {{zijn_haar_begeleider}} werk beter te kunnen doen en vul deze vragenlijst in \uD83D\uDE00.');
       inviteTexts = this.push(inviteTexts, 'Heel fijn dat je meedoet, hiermee help je {{naam_begeleider}} {{zijn_haar_begeleider}} begeleiding te verbeteren!');
     }
     return inviteTexts;
@@ -55,8 +55,8 @@ export default class StudentTexts extends InvitationTexts {
   onStreakPool() {
     return [
       'Fijn dat je zo behulpzaam bent {{deze_student}}! Vul je opnieuw de vragenlijst in?',
-      'Je zit nog steeds in je bonus-euro-streak! Jouw u-can-act spaarpot raakt al behoorlijk vol \u1F60A.',
-      'Bedankt voor je inzet! Ga zo door \u1F60A.',
+      'Je zit nog steeds in je bonus-euro-streak! Jouw u-can-act spaarpot raakt al behoorlijk vol \uD83D\uDE00.',
+      'Bedankt voor je inzet! Ga zo door \uD83D\uDE00.',
       '{{deze_student}}, je bent een topper! Bedankt voor je goede hulp!',
       'Goed bezig met je bonus-euro-streak, ga zo door!',
       'Super dat je de vragenlijst al zo vaak achter elkaar hebt ingevuld, bedankt en ga zo door!',
@@ -107,7 +107,7 @@ export default class StudentTexts extends InvitationTexts {
   }
 
   announcementWeekTexts(response) {
-    if (this.postAssessment(response)) {
+    if (this.isPostAssessment(response)) {
       return '{{deze_student}}, wil jij jouw beloning ontvangen? Dit is de laatste' +
         ' kans om jouw IBAN in te vullen en alleen dan kunnen wij jou uitbetalen.' +
         ' Het zou zonde zijn om jouw gevulde u-can-act spaarpot niet te innen,' +
@@ -118,7 +118,7 @@ export default class StudentTexts extends InvitationTexts {
     ' nummer aan ons door. Alleen dan kunnen wij jouw beloning uitbetalen.' +
     ' Dit kan je doen door de laatste vragenlijst in te vullen.\n' +
     'Ps. Door aan te geven dat je inmiddels vakantie hebt, wordt de' +
-    ' vragenlijst een stuk korter dan je gewend bent \u1F60A.';
+    ' vragenlijst een stuk korter dan je gewend bent \uD83D\uDE00.';
   }
 
   repeatedFirstResponse_pool() {
