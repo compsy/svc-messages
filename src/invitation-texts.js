@@ -3,81 +3,82 @@ export default class InvitationTexts {
     this.MAX_REWARD_THRESHOLD = 8000;
   }
 
-  message(response, protocolSubscription) {
-    throw 'method message not implemented by subclass!';
+  message(_response, _protocolSubscription) {
+    throw new Error('method message not implemented by subclass!');
   }
 
   firstResponsePool() {
-    throw 'method firstResponsePool not implemented by subclass!';
+    throw new Error('method firstResponsePool not implemented by subclass!');
   }
 
   repeatedFirstResponsePool() {
-    throw 'method repeatedFirstResponsePool not implemented by subclass!';
+    throw new Error('method repeatedFirstResponsePool not implemented by subclass!');
   }
 
   secondResponsePool() {
-    throw 'method secondResponsePool not implemented by subclass!';
+    throw new Error('method secondResponsePool not implemented by subclass!');
   }
 
-  rewardsThresholdPool(Threshold) {
-    throw 'method rewardsThresholdPool not implemented by subclass!';
+  rewardsThresholdPool(_threshold) {
+    throw new Error('method rewardsThresholdPool not implemented by subclass!');
   }
 
-  defaultPool(Protocol) {
-    throw 'method defaultPool not implemented by subclass!';
+  defaultPool(_protocol) {
+    throw new Error('method defaultPool not implemented by subclass!');
   }
 
   aboutToBeOnStreakPool() {
-    throw 'method aboutToBeOnStreakPool not implemented by subclass!';
+    throw new Error('method aboutToBeOnStreakPool not implemented by subclass!');
   }
 
   onStreakPool() {
-    throw 'method onStreakPool not implemented by subclass!';
+    throw new Error('method onStreakPool not implemented by subclass!');
   }
 
   firstResponsesMissedPool() {
-    throw 'method firstResponsesMissedPool not implemented by subclass!';
+    throw new Error('method firstResponsesMissedPool not implemented by subclass!');
   }
 
   missedLastPool() {
-    throw 'method missedLastPool not implemented by subclass!';
+    throw new Error('method missedLastPool not implemented by subclass!');
   }
 
   missedMoreThanOnePool() {
-    throw 'method missedMoreThanOnePool not implemented by subclass!';
+    throw new Error('method missedMoreThanOnePool not implemented by subclass!');
   }
 
+
   missedEverythingPool() {
-    throw 'method missedEverythingPool not implemented by subclass!';
+    throw new Error('method missedEverythingPool not implemented by subclass!');
   }
 
   rejoinedAfterMissingOnePool() {
-    throw 'method rejoinedAfterMissingOnePool not implemented by subclass!';
+    throw new Error('method rejoinedAfterMissingOnePool not implemented by subclass!');
   }
 
   rejoinedAfterMissingMultiplePool() {
-    throw 'method rejoinedAfterMissingMultiplePool not implemented by subclass!';
+    throw new Error('method rejoinedAfterMissingMultiplePool not implemented by subclass!');
   }
 
   missedAfterStreakPool() {
-    throw 'method missedAfterStreakPool not implemented by subclass!';
+    throw new Error('method missedAfterStreakPool not implemented by subclass!');
   }
 
   isAnnouncementWeek() {
     // Time.zone.now > Time.new(2018, 7, 24).inTimeZone &&
     // Time.zone.now < Time.new(2018, 8, 1).inTimeZone
-    const fromDate = Date.parse("7/24/2018");
-    const toDate = Date.parse("8/1/2018");
-    const today = new Date()
+    const fromDate = Date.parse('7/24/2018');
+    const toDate = Date.parse('8/1/2018');
+    const today = new Date();
 
-    if((today < toDate && today >= fromDate)) {
-        return true;
+    if (today < toDate && today >= fromDate) {
+      return true;
     }
     return false;
   }
 
   targetFirstName(response) {
-    return person.first_name;
+    return response.person.first_name;
   }
 
   currentIndex(protocolCompletion) {
@@ -88,12 +89,13 @@ export default class InvitationTexts {
 
   specialConditions(protocolCompletion, curidx) {
     let smsPool = [];
+    const empty = 0;
     smsPool = this.push(smsPool, this.firstResponsesConditions(protocolCompletion, curidx));
-    if (smsPool.length === 0) {
+    if (smsPool.length === empty) {
       smsPool = this.push(smsPool, this.missedResponsesConditions(protocolCompletion, curidx));
     }
 
-    if (smsPool.length === 0) {
+    if (smsPool.length === empty) {
       smsPool = this.push(smsPool, this.rejoinedConditions(protocolCompletion, curidx));
     }
 
