@@ -1,15 +1,17 @@
 import StudentTexts from './student-texts';
 import MentorTexts from './mentor-texts';
 
-function main(params) {
-  const mentor = false;
-  let generator = undefined;
-  if (mentor === true) {
-    generator = new MentorTexts();
-  } else {
-    generator = new StudentTexts();
+function getGenerator(isMentor) {
+  if (isMentor) {
+    return new MentorTexts();
   }
+  return new StudentTexts();
+}
 
+function main(params) {
+  const isMentor = false;
+
+  const generator = getGenerator(isMentor);
   const text = generator.message(params.response, params.protocol_subscription);
   return {
     payload: text

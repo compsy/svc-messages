@@ -3,11 +3,20 @@
   "version": "0.0.1",
   "description": "Sample OpenWhisk NodeJS serverless framework service.",
   "main": "service.js",
+  "scripts": {
+    "test": "jest"
+  },
   "keywords": [
     "serverless",
     "openwhisk"
   ],
   "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-jest": "^23.4.2",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-es2016": "^6.24.1",
+    "jest": "^23.5.0",
+    "regenerator-runtime": "^0.12.1",
     "rollup": "^0.63.4"
   }
 }

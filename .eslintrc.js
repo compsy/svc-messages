@@ -6,7 +6,14 @@ var OFF = 0,
 
 module.exports = exports = {
   "env": {
-    "es6": true
+    "browser": true,
+    "es6": true,
+    "jest": true
+  },
+  "globals": {
+    "localStorage": true,
+    "console": true,
+    "process": true
   },
 
   "parserOptions": {
@@ -21,10 +28,10 @@ module.exports = exports = {
     "react"
   ],
 
-  "ecmaFeatures": {
-    // env=es6 doesn't include modules, which we are using
-    "modules": true
-  },
+  //"ecmaFeatures": {
+    //// env=es6 doesn't include modules, which we are using
+    //"modules": true
+  //},
 
   "extends": "eslint:recommended",
 
@@ -90,7 +97,7 @@ module.exports = exports = {
     "no-new": ERROR,
     "no-octal-escape": ERROR,
     "no-param-reassign": ERROR,
-    "no-process-env": WARN,
+    //"no-process-env": WARN,
     "no-proto": ERROR,
     "no-redeclare": ERROR,
     "no-return-assign": ERROR,
@@ -186,8 +193,8 @@ module.exports = exports = {
     "func-names": WARN,
     "func-style": [WARN, "declaration"],
     "id-length": [WARN, {
-      "min": 2,
-      "max": 32
+      "min": 1,
+      "max": 64
     }],
     "indent": [2, 2],
     "jsx-quotes": [WARN, "prefer-double"],
