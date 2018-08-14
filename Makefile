@@ -7,6 +7,7 @@ exists := $(strip $(shell bx wsk action list | awk '{print $1}' | grep $(action_
 .DEFAULT_GOAL := all
 
 all: build service example
+deploy: build service
 
 install:
 	npm install 
@@ -24,7 +25,6 @@ endif
 example:
 	#./action_example.sh | jq '.response.result.payload'
 	./action_example.sh | jq
-
 
 name:
 	@echo $(PROJECT_NAME)
