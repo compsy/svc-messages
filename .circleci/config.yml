@@ -3,7 +3,8 @@ defaults: &defaults
 		- image: circleci/node:7.10
 	working_directory: ~/svc-messages
 
-version: 2
+version: 2.0
+
 jobs:
 	checkout_code:
 		<<: *defaults
