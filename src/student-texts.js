@@ -17,17 +17,14 @@ export default class StudentTexts extends InvitationTexts {
     smsPool = this.push(smsPool, this.specialConditions(protocolCompletion, curidx));
 
     if (smsPool.length === 0) {
-      console.log('!!!!!!!!!!!!!!!!!!!!!!!');
       smsPool = this.push(smsPool, this.thresholdConditions());
     }
 
     if (smsPool.length === 0) {
-      console.log('@@@@@@@@@@@@@@@@@@@@@@@');
       smsPool = this.push(smsPool, this.streakConditions(protocolCompletion, curidx));
     }
 
     if (smsPool.length === 0) {
-      console.log('######################');
       smsPool = this.push(smsPool, this.defaultPool(protocol));
     }
     return this.sampleMessage(smsPool);
@@ -45,7 +42,6 @@ export default class StudentTexts extends InvitationTexts {
     ];
 
     if (protocol !== undefined && protocol.name !== undefined && protocol.name !== 'studenten_control') {
-      console.log('!!!!!!!!!!!!!!!!!!!!!!!!');
       inviteTexts = this.push(inviteTexts, 'Help {{naam_begeleider}} om {{zijn_haar_begeleider}} werk beter te kunnen doen en vul deze vragenlijst in \uD83D\uDE00.');
       inviteTexts = this.push(inviteTexts, 'Heel fijn dat je meedoet, hiermee help je {{naam_begeleider}} {{zijn_haar_begeleider}} begeleiding te verbeteren!');
     }

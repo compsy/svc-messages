@@ -1,6 +1,7 @@
 import InvitationTexts from './invitation-texts';
 
 export default class MentorTexts extends InvitationTexts {
+
   message(response, protocolSubscription) {
     if (this.isAnnouncementWeek()) {
       return this.announcementWeekTexts(response);
