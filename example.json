@@ -1,9 +1,19 @@
 {
+  "person": {
+    "group": "Mentor",
+    "first_name": "Jantje"
+  },
+  "response": {
+    "questionnaire_name": "nameting",
+    "open_questionnaires": [ ]
+  },
   "protocol_subscription": {
+    "invitations": 2,
     "protocol" : {
       "name": "Name of the protocol",
       "current_reward": 100,
-      "maximum_reward": 2000
+      "maximum_reward": 2000,
+      "streak_threshold": 3
     },
     "protocol_completion": [{
       "completed": true,
@@ -286,11 +296,5 @@
       "streak": -1,
       "future_or_current": true
     }]
-  },
-  "response": {
-    "person" : {
-      "first_name": 'jane',
-
-    },
   }
 }

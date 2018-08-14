@@ -1,25 +1,27 @@
 import InvitationTexts from './invitation-texts';
 
-export default class StudentTexts extends InvitationTexts {
+export default class MentorTexts extends InvitationTexts {
   message(response, protocolSubscription) {
-    if (this.inAnnouncementWeek()) {
+    if (this.isAnnouncementWeek()) {
       return this.announcementWeekTexts(response);
     }
     return this.normalTexts(response, protocolSubscription);
   }
 
   announcementWeekTexts(response) {
-    if (this.postAssessment(response)) {
+    if (this.isPostAssessment(response)) {
       console.log('target still missing!');
-      return `Hoi ${this.targetFirstName(response)}, wij willen net als jij graag vsv voorkomen.` +
+      // @Ando: volgens mij klopt dit wel gewoon, met naam begeleider. Dit moeten we alleen
+      // niet vergeten goed te testen.
+      return `Hoi {{naam_begeleider}}, wij willen net als jij graag vsv voorkomen.` +
         ' Wil jij ons voor de laatste keer helpen en de laatste, maar cruciale,' +
         ' u-can-act vragenlijst invullen?';
     }
-    return `Hoi ${this.targetFirstName(response)}, de allerlaatste vragenlijsten` +
+    return `Hoi {{naam_begeleider}}, de allerlaatste vragenlijsten` +
       ' staan voor je klaar. Voor ons is het ontzettend belangrijk dat deze' +
       ' wordt ingevuld. Help jij ons voor de laatste keer?\n' +
       'Ps. Door aan te geven dat je inmiddels vakantie hebt, wordt de' +
-      ' vragenlijst een stuk korter dan je gewend bent .';
+      ' vragenlijst een stuk korter dan je gewend bent \uD83D\uDE00.';
   }
 
   normalTexts(response, protocolSubscription) {
@@ -29,7 +31,8 @@ export default class StudentTexts extends InvitationTexts {
 
     // voormeting is in different protsub
     const hasOneInvite = 1;
-    if (response.protocol_subscription.responses.invited.count === hasOneInvite) {
+    //if (response.protocol_subscription.responses.invited.count === hasOneInvite) {
+    if (protocolSubscription.invitations === hasOneInvite) {
       return this.wasInvitedMessage();
     }
     return this.defaultMessage(response);
@@ -41,7 +44,7 @@ export default class StudentTexts extends InvitationTexts {
   }
 
   defaultMessage(response) {
-    return `Hoi ${this.targetFirstName(response)}, je wekelijkse vragenlijsten staan weer voor je klaar!`;
+    return `Hoi {{naam_begeleider}}, je wekelijkse vragenlijsten staan weer voor je klaar!`;
   }
 
   preAssessmentQuestionnaireTexts(protocolSubscription) {
@@ -56,18 +59,10 @@ export default class StudentTexts extends InvitationTexts {
   }
 
   openQuestionnaire(response, questionnaireName) {
-    return this.getPerson(response).openQuestionnaire(questionnaireName);
+    return response.open_questionnaires.some((questionnaire) => (questionnaire === questionnaireName))
   }
 
   completedSome(protocolSubscription) {
     return protocolSubscription.protocol_completion.some((elem) => {elem.completed});
-  }
-
-  targetFirstName(response) {
-    return response.person.first_name;
-  }
-
-  getPerson(response) {
-    return response.protocolSubscription.person;
   }
 }

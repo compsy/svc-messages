@@ -1,8 +1,8 @@
 {
   "name": "svc-messages",
   "version": "0.0.1",
-  "description": "Sample OpenWhisk NodeJS serverless framework service.",
-  "main": "service.js",
+  "description": "Messages microservice: creates sms messages to send out to the participants in u-can-act.",
+  "main": "dist/service.js",
   "scripts": {
     "test": "jest"
   },

@@ -1,5 +1,5 @@
 export default {
-  input: 'service.js',
+  input: 'src/service.js',
   output: {
     file: 'dist/service.js',
     format: 'cjs'
