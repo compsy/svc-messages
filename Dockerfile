@@ -1,9 +1,10 @@
 FROM compsy/svc-server:latest
 WORKDIR /service
-COPY package*.json 
+COPY package*.json ./
 
 RUN npm install
+
+COPY . ./
 RUN make build
 
-COPY . /service/
-
+WORKDIR /app
